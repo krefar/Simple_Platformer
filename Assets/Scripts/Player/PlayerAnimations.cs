@@ -1,6 +1,4 @@
-﻿using Unity.Burst.CompilerServices;
-
-namespace Assets.Scripts.Player
+﻿namespace Assets.Scripts.Player
 {
     public static class PlayerAnimations
     {

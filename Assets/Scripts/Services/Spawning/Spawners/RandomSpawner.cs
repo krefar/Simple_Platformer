@@ -1,11 +1,6 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-/// <summary>
-/// Базовый класс для описания поднимающего
-/// </summary>
-/// <typeparam name="T">Тип объекта для спавнера</typeparam>
 public class RandomSpawner<T> : SpawnerBase<T>
     where T : Object, new()
 {
