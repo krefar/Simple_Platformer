@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Player : MonoBehaviour
 {
-    private const string _horizontal = "Horizontal";
+    private const string Horizontal = "Horizontal";
     private int _currentJumpCount;
 
     [SerializeField] private float _moveSpeed;
@@ -47,24 +47,13 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        var offsetX = Input.GetAxis(_horizontal) * _moveSpeed * Time.deltaTime;
+        var offsetX = Input.GetAxis(Horizontal) * _moveSpeed * Time.deltaTime;
         transform.Translate(offsetX, 0, 0);
 
-        EnsureAnimator(offsetX);
-        EnsureSpriteRenderer(offsetX);
-    }
-
-    private void EnsureSpriteRenderer(float offsetX)
-    {
         var spriteRenderer = GetComponent<SpriteRenderer>();
-
         spriteRenderer.flipX = offsetX < 0;
-    }
 
-    private void EnsureAnimator(float moveX)
-    {
         var animator = GetComponent<Animator>();
-
-        animator.SetBool(PlayerAnimations.IsRunning, moveX != 0);
+        animator.SetBool(PlayerAnimations.IsRunning, offsetX != 0);
     }
 }
