@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
         transform.Translate(translateTo, 0, 0);
 
         _spriteRenderer.flipX = _moveOffsetX < 0;
-        _animator.SetBool(PlayerAnimations.IsRunning, _moveOffsetX != 0);
+        _animator.SetBool(PlayerAnimatorParams.IsRunning, _moveOffsetX != 0);
 
         _moveOffsetX = 0;
     }

@@ -6,25 +6,28 @@ public class RandomSpawner<T> : SpawnerBase<T>
     where T : Object, new()
 {
     private int pointsCount;
+    private List<Transform> _spawnPoints;
 
     private new void Awake()
     {
         base.Awake();
+
+        _spawnPoints = GetSpawnPoints().ToList();
     }
 
     protected override Transform GetSpawnPoint()
     {
-        if (pointsCount == SpawnPoints.Count)
+        if (pointsCount == _spawnPoints.Count)
         {
             pointsCount = 0;
         }
 
-        var randomIndex = Random.Range(0, SpawnPoints.Count - pointsCount);
-        var randomPoint = SpawnPoints[randomIndex];
+        var randomIndex = Random.Range(0, _spawnPoints.Count - pointsCount);
+        var randomPoint = _spawnPoints[randomIndex];
 
-        SpawnPoints.Insert(SpawnPoints.Count, randomPoint);
-        SpawnPoints.RemoveAt(randomIndex);
+        _spawnPoints.Add(randomPoint);
+        _spawnPoints.RemoveAt(randomIndex);
 
-        return SpawnPoints.Last();
+        return randomPoint;
     }
 }

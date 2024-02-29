@@ -7,10 +7,13 @@ public class Coin : MonoBehaviour
 
     private int _value;
 
-    public int Value { get => _value; }
-
     private void Awake()
     {
         _value = Random.Range(MinValue, MaxValue);
+    }
+
+    public int GetValue()
+    {
+        return _value;
     }
 }

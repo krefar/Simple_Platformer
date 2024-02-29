@@ -14,7 +14,7 @@ namespace Assets.Scripts.Services.Storage
 
             foreach ( var coin in allCoins)
             {
-                result += coin.Value;
+                result += coin.GetValue();
             }
 
             return result;

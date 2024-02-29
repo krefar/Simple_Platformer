@@ -5,28 +5,27 @@ using UnityEngine;
 using UnityEngine.Pool;
 
 /// <summary>
-/// Базовый класс для описания поднимающего
+/// Базовый класс для спавнера
 /// </summary>
 /// <typeparam name="T">Тип объекта для спавнера</typeparam>
 public abstract class SpawnerBase<T> : MonoBehaviour
-    where T : Object, new()
+    where T : Object
 {
     [SerializeField] private T _prefab;
     [SerializeField] private Transform _spawnPointsContainer;
 
     private ObjectPool<T> _pool;
-        
-    protected List<Transform> SpawnPoints;
+    private List<Transform> _spawnPoints;
 
     protected abstract Transform GetSpawnPoint();
 
     protected void Awake()
     {
-        SpawnPoints = new List<Transform>();
+        _spawnPoints = new List<Transform>();
 
         foreach (Transform child in _spawnPointsContainer)
         {
-            SpawnPoints.Add(child);
+            _spawnPoints.Add(child);
         }
 
         _pool = new ObjectPool<T>(
@@ -57,6 +56,11 @@ public abstract class SpawnerBase<T> : MonoBehaviour
         Destroy(gameObject);
     }
 
+    protected IEnumerable<Transform> GetSpawnPoints()
+    {
+        return _spawnPoints.AsReadOnly();
+    }
+
     private void GetObject(T obj)
     {
         var gameObject = obj.GameObject();
@@ -82,7 +86,7 @@ public abstract class SpawnerBase<T> : MonoBehaviour
     {
         var wait = new WaitForSeconds(1);
 
-        while (_pool.CountActive < SpawnPoints.Count)
+        while (_pool.CountActive < _spawnPoints.Count)
         {
             _pool.Get();
 
