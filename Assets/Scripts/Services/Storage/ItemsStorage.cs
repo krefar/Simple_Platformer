@@ -4,7 +4,7 @@ namespace Assets.Scripts.Services.Storage
 {
     public abstract class ItemsStorage<T>
     {
-        private List<T> _items { get; set; }
+        private List<T> _items;
 
         public abstract string Name { get; }
 

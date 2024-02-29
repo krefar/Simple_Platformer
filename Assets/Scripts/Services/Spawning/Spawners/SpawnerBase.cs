@@ -11,29 +11,29 @@ using UnityEngine.Pool;
 public abstract class SpawnerBase<T> : MonoBehaviour
     where T : Object, new()
 {
-    private ObjectPool<T> _pool;
-
     [SerializeField] private T _prefab;
     [SerializeField] private Transform _spawnPointsContainer;
-    
-    protected List<Transform> _spawnPoints;
+
+    private ObjectPool<T> _pool;
+        
+    protected List<Transform> SpawnPoints;
 
     protected abstract Transform GetSpawnPoint();
 
     protected void Awake()
     {
-        _spawnPoints = new List<Transform>();
+        SpawnPoints = new List<Transform>();
 
         foreach (Transform child in _spawnPointsContainer)
         {
-            _spawnPoints.Add(child);
+            SpawnPoints.Add(child);
         }
 
         _pool = new ObjectPool<T>(
             createFunc: () => CreateObject(),
-            actionOnGet: (obj) => ActionOnGet(obj),
-            actionOnRelease: (obj) => ActionOnRelease(obj),
-            actionOnDestroy: (obj) => ActionOnDestroy(obj),
+            actionOnGet: (obj) => GetObject(obj),
+            actionOnRelease: (obj) => ReleaseObject(obj),
+            actionOnDestroy: (obj) => DestroyObject(obj),
             collectionCheck: true,
             defaultCapacity: 10,
             maxSize: 20
@@ -50,14 +50,14 @@ public abstract class SpawnerBase<T> : MonoBehaviour
         _pool.Release(obj);
     }
 
-    private void ActionOnDestroy(T obj)
+    private void DestroyObject(T obj)
     {
         var gameObject = obj.GameObject();
 
         Destroy(gameObject);
     }
 
-    private void ActionOnGet(T obj)
+    private void GetObject(T obj)
     {
         var gameObject = obj.GameObject();
         var spawnPoint = GetSpawnPoint();
@@ -66,7 +66,7 @@ public abstract class SpawnerBase<T> : MonoBehaviour
         gameObject.SetActive(true);
     }
     
-    private void ActionOnRelease(T obj)
+    private void ReleaseObject(T obj)
     {
         var gameObject = obj.GameObject();
 
@@ -82,7 +82,7 @@ public abstract class SpawnerBase<T> : MonoBehaviour
     {
         var wait = new WaitForSeconds(1);
 
-        while (_pool.CountActive < _spawnPoints.Count)
+        while (_pool.CountActive < SpawnPoints.Count)
         {
             _pool.Get();
 

@@ -7,22 +7,35 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Player : MonoBehaviour
 {
-    private const string Horizontal = "Horizontal";
-    private int _currentJumpCount;
-
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
     [SerializeField] private int _jumpCount = 1;
 
+    private int _currentJump;
+    private SpriteRenderer _spriteRenderer;
+    private Animator _animator;
+
+    private bool _needJump;
+    private float _moveOffsetX;
+
     private void Awake()
     {
-        _currentJumpCount = _jumpCount;
+        _currentJump = 0;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        Move();
-        Jump();
+        if (_moveOffsetX != 0)
+        {
+            ProcessMove();
+        }
+
+        if (_needJump)
+        {
+            ProcessJump();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,29 +44,40 @@ public class Player : MonoBehaviour
         {
             if (collision.contacts.Any(contact => contact.normal == Vector2.up || contact.normal == Vector2.down))
             {
-                _currentJumpCount = _jumpCount;
+                _currentJump = 0;
             }
         }
     }
 
-    private void Jump()
+    public void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _currentJumpCount-- > 0)
+        _needJump = true;
+    }
+    
+    public void Move(float offsetX)
+    {
+        _moveOffsetX = offsetX;
+    }
+
+    private void ProcessJump()
+    {
+        if (_currentJump++ <= _jumpCount)
         {
             var rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
         }
+
+        _needJump = false;
     }
 
-    private void Move()
+    private void ProcessMove()
     {
-        var offsetX = Input.GetAxis(Horizontal) * _moveSpeed * Time.deltaTime;
-        transform.Translate(offsetX, 0, 0);
+        var translateTo = _moveOffsetX * _moveSpeed * Time.deltaTime;
+        transform.Translate(translateTo, 0, 0);
 
-        var spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.flipX = offsetX < 0;
+        _spriteRenderer.flipX = _moveOffsetX < 0;
+        _animator.SetBool(PlayerAnimations.IsRunning, _moveOffsetX != 0);
 
-        var animator = GetComponent<Animator>();
-        animator.SetBool(PlayerAnimations.IsRunning, offsetX != 0);
+        _moveOffsetX = 0;
     }
 }

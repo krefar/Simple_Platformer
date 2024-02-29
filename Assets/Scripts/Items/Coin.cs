@@ -13,13 +13,4 @@ public class Coin : MonoBehaviour
     {
         _value = Random.Range(MinValue, MaxValue);
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent(out CoinPicker coinPicker))
-        {
-            coinPicker.Pick(this);
-            gameObject.SetActive(false);
-        }
-    }
 }
