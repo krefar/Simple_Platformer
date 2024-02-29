@@ -12,8 +12,10 @@ public class Player : MonoBehaviour
     [SerializeField] private int _jumpCount = 1;
 
     private int _currentJump;
-    private SpriteRenderer _spriteRenderer;
+
+    private Rigidbody2D _rigidbody;
     private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
 
     private bool _needJump;
     private float _moveOffsetX;
@@ -23,6 +25,7 @@ public class Player : MonoBehaviour
         _currentJump = 0;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
@@ -63,8 +66,7 @@ public class Player : MonoBehaviour
     {
         if (_currentJump++ <= _jumpCount)
         {
-            var rigidbody = GetComponent<Rigidbody2D>();
-            rigidbody.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
+            _rigidbody.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
         }
 
         _needJump = false;
