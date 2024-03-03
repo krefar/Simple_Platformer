@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Services.Spawning.CoinSpawner
 {
-    public class CoinSpawner : RandomSpawner<Coin>
+    public class MedKitSpawner : RandomSpawner<MedKit>
     {
     }
 }

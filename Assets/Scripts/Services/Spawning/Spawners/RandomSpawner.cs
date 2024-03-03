@@ -5,7 +5,6 @@ using UnityEngine;
 public class RandomSpawner<T> : SpawnerBase<T>
     where T : Object, new()
 {
-    private int pointsCount;
     private List<Transform> _baseSpawnPoints;
 
     private new void Awake()
@@ -17,15 +16,14 @@ public class RandomSpawner<T> : SpawnerBase<T>
 
     protected override Transform GetSpawnPoint()
     {
-        if (pointsCount == _baseSpawnPoints.Count)
+        if (_baseSpawnPoints.Count == 0)
         {
-            pointsCount = 0;
+            _baseSpawnPoints = GetSpawnPoints().ToList();
         }
 
-        var randomIndex = Random.Range(0, _baseSpawnPoints.Count - pointsCount);
+        var randomIndex = Random.Range(0, _baseSpawnPoints.Count);
         var randomPoint = _baseSpawnPoints[randomIndex];
 
-        _baseSpawnPoints.Add(randomPoint);
         _baseSpawnPoints.RemoveAt(randomIndex);
 
         return randomPoint;

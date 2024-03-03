@@ -1,6 +1,6 @@
 using Assets.Scripts.Services.Storage;
 
-public class CoinPicker : PickerBase<Coin>
+public class CoinPicker : PickerWithStorage<Coin>
 {
     public CoinPicker()
         : base(new Wallet())

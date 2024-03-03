@@ -5,10 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
-/// <summary>
-/// Базовый класс для спавнера
-/// </summary>
-/// <typeparam name="T">Тип объекта для спавна</typeparam>
 public abstract class SpawnerBase<T> : MonoBehaviour
     where T : Object
 {
@@ -87,7 +83,7 @@ public abstract class SpawnerBase<T> : MonoBehaviour
     {
         var wait = new WaitForSeconds(1);
 
-        while (_pool.CountActive < _spawnPoints.Count)
+        while (_pool.CountAll < _spawnPoints.Count)
         {
             _pool.Get();
 

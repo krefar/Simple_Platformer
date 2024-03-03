@@ -1,4 +1,4 @@
-using Assets.Scripts.Player;
+using Assets.Scripts;
 using System.Linq;
 using UnityEngine;
 
