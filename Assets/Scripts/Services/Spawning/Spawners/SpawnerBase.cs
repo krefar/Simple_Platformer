@@ -1,9 +1,12 @@
+using Assets.Scripts.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
 
 public abstract class SpawnerBase<T> : MonoBehaviour
     where T : Object
@@ -13,11 +16,14 @@ public abstract class SpawnerBase<T> : MonoBehaviour
 
     private ObjectPool<T> _pool;
     private List<Transform> _spawnPoints;
+    private Scene _gameScene;
 
     protected abstract Transform GetSpawnPoint();
 
     protected void Awake()
     {
+        _gameScene = SceneManager.GetSceneByBuildIndex((int)ScenesEnum.GameScene);
+
         _spawnPoints = new List<Transform>();
 
         foreach (Transform child in _spawnPointsContainer)
@@ -76,14 +82,16 @@ public abstract class SpawnerBase<T> : MonoBehaviour
 
     private T CreateObject()
     {
-        return Instantiate(_prefab);
+        return (T)PrefabUtility.InstantiatePrefab(_prefab, _gameScene);
     }
 
     private IEnumerator SpawnObjects()
     {
         var wait = new WaitForSeconds(1);
 
-        while (_pool.CountAll < _spawnPoints.Count)
+        var isGameScene = SceneManager.GetActiveScene().buildIndex == _gameScene.buildIndex;
+
+        while (isGameScene && _pool.CountAll < _spawnPoints.Count)
         {
             _pool.Get();
 
