@@ -40,5 +40,15 @@ namespace Assets.Scripts.Status
         {
             return _currentHealth == _maxHealth;
         }
+
+        public int GetCurrentHealh()
+        {
+            return _currentHealth;
+        }
+        
+        public int GetMaxHealh()
+        {
+            return _maxHealth;
+        }
     }
 }
