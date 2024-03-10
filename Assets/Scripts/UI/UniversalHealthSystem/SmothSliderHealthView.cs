@@ -1,27 +1,39 @@
 using Assets.Scripts.Status;
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Slider))]
-public class SmothSliderHealthView : MonoBehaviour
+public class SmothSliderHealthView : SliderHealthView
 {
-    [SerializeField] private Health _health;
     [SerializeField] private float _speed;
 
-    private Slider _slider;
+    private Slider _baseSlider;
+    private Health _baseHealthModel;
 
-    private void Start()
+    protected override void Awake()
     {
-        _slider = GetComponent<Slider>();
-        _slider.minValue = 0;
-        _slider.maxValue = _health.GetMaxHealh();
-        _slider.value = _health.GetCurrentHealh();
+        base.Awake();
+
+        _baseSlider = GetSlider();
+        _baseHealthModel = GetHealthModel();
     }
 
-    private void Update()
+    protected override void Render()
     {
-        _slider.value = Mathf.MoveTowards(_slider.value, _health.GetCurrentHealh(), _speed * Time.deltaTime);
+        StartCoroutine(RenderSmooth());
+    }
+
+    private IEnumerator RenderSmooth()
+    {
+        var wait = new WaitForEndOfFrame();
+
+        while (_baseSlider.value != _baseHealthModel.GetCurrentHealh())
+        {
+            _baseSlider.value = Mathf.MoveTowards(_baseSlider.value, _baseHealthModel.GetCurrentHealh(), _speed * Time.deltaTime);
+
+            yield return wait;
+        }
     }
 }

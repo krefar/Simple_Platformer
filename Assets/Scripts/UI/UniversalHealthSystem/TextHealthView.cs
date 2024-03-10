@@ -3,19 +3,27 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(TMP_Text))]
-public class TextHealthView : MonoBehaviour
+public class TextHealthView : HealthViewBase
 {
-    [SerializeField] private Health _health;
+    private TMP_Text _tmpText;
+    private Health _healthModel;
 
-    private TMP_Text _text;
-
-    private void Awake()
+    protected override void Awake()
     {
-        _text = GetComponent<TMP_Text>();
+        base.Awake();
+
+        _tmpText = GetComponent<TMP_Text>();
+        _healthModel = GetHealthModel();
+        _tmpText.text = GetHealthText();
     }
 
-    private void Update()
+    protected override void Render()
     {
-        _text.text = $"{_health.GetCurrentHealh()}/{_health.GetMaxHealh()}";
+        _tmpText.text = GetHealthText();
     }
+
+    private string GetHealthText()
+    {
+        return $"{_healthModel.GetCurrentHealh()}/{_healthModel.GetMaxHealh()}";
+}
 }

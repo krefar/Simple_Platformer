@@ -4,22 +4,33 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Slider))]
-public class SliderHealthView : MonoBehaviour
+public class SliderHealthView : HealthViewBase
 {
-    [SerializeField] private Health _health;
-
     private Slider _slider;
+    private Health _healthModel;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
+        _healthModel = GetHealthModel();
         _slider = GetComponent<Slider>();
-        _slider.minValue = 0;
-        _slider.maxValue = _health.GetMaxHealh();
-        _slider.value = _health.GetCurrentHealh();
     }
 
-    private void Update()
+    private void Start()
     {
-        _slider.value = _health.GetCurrentHealh();
+        _slider.minValue = 0;
+        _slider.maxValue = _healthModel.GetMaxHealh();
+        _slider.value = _healthModel.GetCurrentHealh();
+    }
+
+    protected Slider GetSlider()
+    {
+        return _slider;
+    }
+
+    protected override void Render()
+    {
+        _slider.value = _healthModel.GetCurrentHealh();
     }
 }

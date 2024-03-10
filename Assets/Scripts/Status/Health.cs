@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace Assets.Scripts.Status
 {
-    internal class Health : MonoBehaviour
+    public class Health : MonoBehaviour
     {
         [SerializeField] private int _maxHealth;
         
         private int _currentHealth;
+
+        public event Action CurrentHealthChanged;
 
         private void Awake()
         {
@@ -22,6 +24,8 @@ namespace Assets.Scripts.Status
             {
                 _currentHealth = _maxHealth;
             }
+
+            CurrentHealthChanged?.Invoke();
         }
 
         public void Decrease(int amount)
@@ -34,6 +38,8 @@ namespace Assets.Scripts.Status
             {
                 _currentHealth -= amount;
             }
+
+            CurrentHealthChanged?.Invoke();
         }
 
         public bool IsFull()
