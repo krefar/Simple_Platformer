@@ -4,19 +4,16 @@ using UnityEngine;
 
 public abstract class HealthViewBase : MonoBehaviour
 {
-    [SerializeField] private Health _health; 
+    [SerializeField] private Health _health;
 
-    protected virtual void Awake()
+    protected Health Health { get { return _health; } private set { } }
+
+    private void OnEnable()
     {
         _health.CurrentHealthChanged += Render;
     }
 
     protected abstract void Render();
-
-    protected Health GetHealthModel()
-    {
-        return _health;
-    }
 
     private void OnDisable()
     {

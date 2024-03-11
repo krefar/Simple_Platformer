@@ -9,17 +9,6 @@ public class SmothSliderHealthView : SliderHealthView
 {
     [SerializeField] private float _speed;
 
-    private Slider _baseSlider;
-    private Health _baseHealthModel;
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        _baseSlider = GetSlider();
-        _baseHealthModel = GetHealthModel();
-    }
-
     protected override void Render()
     {
         StartCoroutine(RenderSmooth());
@@ -29,9 +18,9 @@ public class SmothSliderHealthView : SliderHealthView
     {
         var wait = new WaitForEndOfFrame();
 
-        while (_baseSlider.value != _baseHealthModel.GetCurrentHealh())
+        while (Slider.value != Health.GetCurrentHealh())
         {
-            _baseSlider.value = Mathf.MoveTowards(_baseSlider.value, _baseHealthModel.GetCurrentHealh(), _speed * Time.deltaTime);
+            Slider.value = Mathf.MoveTowards(Slider.value, Health.GetCurrentHealh(), _speed * Time.deltaTime);
 
             yield return wait;
         }

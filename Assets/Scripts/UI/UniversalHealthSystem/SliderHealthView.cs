@@ -6,31 +6,22 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Slider))]
 public class SliderHealthView : HealthViewBase
 {
-    private Slider _slider;
-    private Health _healthModel;
+    protected Slider Slider { get; private set; }
 
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
-
-        _healthModel = GetHealthModel();
-        _slider = GetComponent<Slider>();
+        Slider = GetComponent<Slider>();
     }
 
     private void Start()
     {
-        _slider.minValue = 0;
-        _slider.maxValue = _healthModel.GetMaxHealh();
-        _slider.value = _healthModel.GetCurrentHealh();
-    }
-
-    protected Slider GetSlider()
-    {
-        return _slider;
+        Slider.minValue = 0;
+        Slider.maxValue = Health.GetMaxHealh();
+        Slider.value = Health.GetCurrentHealh();
     }
 
     protected override void Render()
     {
-        _slider.value = _healthModel.GetCurrentHealh();
+        Slider.value = Health.GetCurrentHealh();
     }
 }

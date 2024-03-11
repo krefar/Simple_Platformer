@@ -6,14 +6,10 @@ using UnityEngine;
 public class TextHealthView : HealthViewBase
 {
     private TMP_Text _tmpText;
-    private Health _healthModel;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
         _tmpText = GetComponent<TMP_Text>();
-        _healthModel = GetHealthModel();
         _tmpText.text = GetHealthText();
     }
 
@@ -24,6 +20,6 @@ public class TextHealthView : HealthViewBase
 
     private string GetHealthText()
     {
-        return $"{_healthModel.GetCurrentHealh()}/{_healthModel.GetMaxHealh()}";
-}
+        return $"{Health.GetCurrentHealh()}/{Health.GetMaxHealh()}";
+    }
 }
