@@ -21,5 +21,10 @@ public class PlayerInput : MonoBehaviour
         var offsetX = Input.GetAxis(Horizontal);
 
         _player.Move(offsetX);
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            _player.CastVampiricAura();
+        }
     }
 }

@@ -4,13 +4,13 @@ namespace Assets.Scripts.Services.Attacking
 {
     public class PlayerAttacker : AttackerBase<PlayerDamageReciever>
     {
-        protected override int Damage => 10;
+        protected override int Damage => 30;
 
-        protected override bool IsValidCollider(Collider2D collision)
+        protected override bool IsValidCollider(Collider2D other)
         {
-            var isPlayer = collision.TryGetComponent(out Player player);
+            var isPlayer = other.TryGetComponent(out Player player);
 
-            return base.IsValidCollider(collision) && isPlayer && collision is not BoxCollider2D;
+            return base.IsValidCollider(other) && isPlayer && other is not BoxCollider2D;
         }
     }
 }

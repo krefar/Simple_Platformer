@@ -7,15 +7,15 @@ namespace Assets.Scripts.Services.Attacking
     {
         protected abstract int Damage { get; }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            if (IsValidCollider(collision) && collision.TryGetComponent(out T damageReciever))
+            if (IsValidCollider(other) && other.TryGetComponent(out T damageReciever))
             {
                 damageReciever.TakeDamage(Damage);
             }
         }
 
-        protected virtual bool IsValidCollider(Collider2D collision)
+        protected virtual bool IsValidCollider(Collider2D other)
         {
             return true;
         }

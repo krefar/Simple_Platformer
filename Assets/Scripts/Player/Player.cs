@@ -1,10 +1,13 @@
 using Assets.Scripts;
+using Assets.Scripts.Abilities;
+using Assets.Scripts.Services.AbilityUsage;
 using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(AbilityUsage))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
@@ -16,7 +19,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
-
+    private AbilityUsage _abilityUsage;
+    
     private bool _needJump;
     private float _moveOffsetX;
 
@@ -26,6 +30,7 @@ public class Player : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _abilityUsage = GetComponent<AbilityUsage>();
     }
 
     private void FixedUpdate()
@@ -60,6 +65,11 @@ public class Player : MonoBehaviour
     public void Move(float offsetX)
     {
         _moveOffsetX = offsetX;
+    }
+
+    public void CastVampiricAura()
+    {
+        _abilityUsage.CastVampiricAura();
     }
 
     private void ProcessJump()
