@@ -47,6 +47,11 @@ namespace Assets.Scripts.Status
             return _currentHealth == _maxHealth;
         }
 
+        public bool IsEmpty()
+        {
+            return _currentHealth == 0;
+        }
+
         public int GetCurrentHealh()
         {
             return _currentHealth;

@@ -11,6 +11,6 @@ namespace Assets.Scripts.Abilities
     {
         [SerializeField] private float _duration;
 
-        public float Duration { get => _duration; private set { } }
+        public float Duration => _duration;
     }
 }

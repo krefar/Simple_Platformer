@@ -39,7 +39,7 @@ namespace Assets.Scripts.Abilities
 
         public override bool CanBeAffected(VampiricEffect effect)
         {
-            return _health.GetCurrentHealh() > 0;
+            return !_health.IsEmpty();
         }
     }
 }
